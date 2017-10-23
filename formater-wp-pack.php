@@ -5,7 +5,7 @@
  * Version: 0.1.0
  * Author: epointal
  * Author URI: http://elisabeth.pointal.org/
- * GitHub Plugin URI: https://github.com/epointal/formater-wp-pack
+ * GitHub Plugin URI: https://github.com/terresolide/formater-wp-pack
  **/
 
 if ( ! defined( 'ABSPATH' ) ) exit;
@@ -27,8 +27,7 @@ Class Formater_WP_Pack
         require_once plugin_dir_path( __FILE__ ) . '/class/Fm_pdf_manager.php';
         require_once plugin_dir_path( __FILE__ ) . '/class/Fm_svg_manager.php';
         self::$_pdf_manager = new Fm_pdf_manager();
-        self::$_svg_manager =  new Fm_svg_manager();
-        
+        self::$_svg_manager =  new Fm_svg_manager();     
     }
     
     public static function get_instance(){
