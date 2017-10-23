@@ -10,8 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-require_once plugin_dir_path( __FILE__ ) . '/class/Fm_pdf_manager.php';
-require_once plugin_dir_path( __FILE__ ) . '/class/Fm_svg_manager.php';
+
 
 Class Formater_WP_Pack
 {
@@ -25,6 +24,8 @@ Class Formater_WP_Pack
     }
     
     public function initialize(){
+        require_once plugin_dir_path( __FILE__ ) . '/class/Fm_pdf_manager.php';
+        require_once plugin_dir_path( __FILE__ ) . '/class/Fm_svg_manager.php';
         self::$_pdf_manager = new Fm_pdf_manager();
         self::$_svg_manager =  new Fm_svg_manager();
         
