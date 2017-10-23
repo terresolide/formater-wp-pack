@@ -1,0 +1,28 @@
+{
+  "name": "formater-wp-pack",
+  "version": "0.1.0",
+  "description": "Tools for site ForM@Ter",
+  "scripts": {
+    "test": "default"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/epointal/formater-wp-pack.git"
+  },
+  "keywords": [
+    "formater",
+    "wordpress",
+    "svg"
+  ],
+  "author": "epointal",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/epointal/formater-wp-pack/issues"
+  },
+  "homepage": "https://github.com/epointal/formater-wp-pack",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-minify": "^1.0.0"
+  }
+}
