@@ -35,6 +35,10 @@ class Fm_svg_manager {
                     20,
                     3 
             ) ;
+            // Add field "interactive" to svg in media manager
+            add_filter( 'attachment_fields_to_edit', array( &$this, 'svg_attachment_field'), 10, 2 );
+            add_filter( 'attachment_fields_to_save', array( &$this, 'svg_attachment_save_field' ), 10, 2 );
+            
         } else {
             // include content for svg file
             add_shortcode ( "formater-svg", array( &$this, "include_file_svg") );
@@ -71,7 +75,50 @@ class Fm_svg_manager {
         );
         return $post_mime_types;
     }
+    /**
+     * Add a field "interactive" in media manager to svg
+     * @param array $form_fields
+     * @param WP_post $post
+     * @return array
+     */
+    public function svg_attachment_field( $form_fields, $post )
+    {
+        
+        if($post->post_mime_type == 'image/svg+xml'){
+            
+            $value = get_post_meta( $post->ID, 'fm_interactive', true );
+            
+            
+            $html = $this->create_field_interactive( $post->ID , $value);
+            
+            $form_fields['fm_interactive'] = array(
+                    'label' => 'Interactive',
+                    'input' => 'html',
+                    'value' => get_post_meta( $post->ID, 'fm_interactive', true),
+                    'html'  => $html
+                    );
+        }
+        return $form_fields;
+    }
     
+    /**
+     * Save interactive value for svg file 
+     * @param array $post
+     * @param array $attachment
+     * @return array
+     */
+    public function svg_attachment_save_field( $post, $attachment){
+        
+        if(isset($attachment['fm_interactive']))
+        {
+            update_post_meta($post['ID'], 'fm_interactive', 1);
+            
+        } else if($post['post_mime_type'] == 'image/svg+xml'){
+            
+            update_post_meta($post['ID'], 'fm_interactive', 0);
+        }
+        return $post;
+    }
     /**
      * Return shortcode for svg instead of image
      * 
@@ -85,9 +132,17 @@ class Fm_svg_manager {
      */
     public function svg_media_send_to_editor($html, $id, $attachment) {
         
-        if (isset ( $attachment ['url'] ) && preg_match ( "/\.svg$/i", $attachment ['url'] )) {
+        $interactive = false;
+        if ( ( isset( $attachment['url']) && preg_match ( "/\.svg$/i", $attachment ['url'] )) 
+                || preg_match ( "/\.svg/i", $html) ){
+            $interactive = get_post_meta($id, 'fm_interactive', true);
+          
+        }
+
+        if ( $interactive ) {
             $class = "";
-            if (isset ( $attachment ['align'] )) {
+            $url = wp_get_attachment_image_src( $id )[0];
+            if ( isset ( $attachment ['align'] )) {
                 switch ($attachment ['align']) {
                     case 'left' :
                     case 'right' :
@@ -95,13 +150,29 @@ class Fm_svg_manager {
                         break;
                 }
             }
-            $filter = '[formater-svg src="' . $attachment ['url'] . '" ' . $class . ' ][/formater-svg]';
+            $filter = '[formater-svg src="' . $url . '" ' . $class . ' ][/formater-svg]';
             return apply_filters ( 'svg_override_send_to_editor', $filter, $html, $id, $attachment );
         } else {
             return $html;
         }
     }
-    
+    /**
+     * Create the checkbox for svg field interactive
+     * @param integer $post_id
+     * @param boolean|integer $value
+     * @return string
+     */
+    private function create_field_interactive( $post_id, $value ){
+        
+        $checked = $value ? 'checked="checked"': '';
+        
+        $html = '<input type="checkbox" name="attachments['. $post_id .'][fm_interactive]"';
+        $html .= ' id="attachments['. $post_id .'][fm_interactive]" ';
+        $html .= ' value="' .$value .'" ';
+        $html .= $checked . '  />';
+        
+        return $html;
+    }
     /**
      * Best practice wordpress is to register script and style
      * Not to include direct tag script or style
