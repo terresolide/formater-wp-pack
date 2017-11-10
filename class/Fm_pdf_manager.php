@@ -38,7 +38,7 @@ class Fm_pdf_manager
              } else {
                  // use last tag version
                  self::$_formater_pdf_viewer_vjs_plugin_url = "https://cdn.rawgit.com/terresolide/formater-pdf-viewer-vjs/" . self::FORMATER_PDF_VIEWER_VJS_VERSION;
-                 self::$_formater_pdf_viewer_vjs_plugin_url.= "/dist/formater-pdf-viewer-vjs_" . self::$_formater_pdf_viewer_vjs_plugin_url. ".js";
+                 self::$_formater_pdf_viewer_vjs_plugin_url.= "/dist/formater-pdf-viewer-vjs_" . self::FORMATER_PDF_VIEWER_VJS_VERSION. ".js";
              }
              add_action ( 'wp_enqueue_scripts', array( &$this, 'formater_register_pdf_script' ));
              /**
