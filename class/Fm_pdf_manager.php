@@ -10,7 +10,7 @@ if (! defined ( 'ABSPATH' ))
 
 class Fm_pdf_manager
 {
-    const FORMATER_PDF_VIEWER_VJS_VERSION = '0.1.5';
+    const FORMATER_PDF_VIEWER_VJS_VERSION = '0.1.6';
     public static $_count_pdf = 0;
     public static $_formater_pdf_viewer_vjs_plugin_url = '';
      
@@ -34,11 +34,11 @@ class Fm_pdf_manager
               */
              if (WP_DEBUG) {
                  // use master version
-                 self::$_formater_pdf_viewer_vjs_plugin_url= "https://rawgit.com/terresolide/formater-pdf-viewer-vjs/master/dist/formater-pdf-viewer-vjs_" . self::FORMATER_PDF_VIEWER_VJS_VERSION . ".js";
+                 self::$_formater_pdf_viewer_vjs_plugin_url= "https://rawgit.com/terresolide/formater-pdf-viewer-vjs/master/dist0/formater-pdf-viewer-vjs.js";
              } else {
                  // use last tag version
                  self::$_formater_pdf_viewer_vjs_plugin_url = "https://cdn.rawgit.com/terresolide/formater-pdf-viewer-vjs/" . self::FORMATER_PDF_VIEWER_VJS_VERSION;
-                 self::$_formater_pdf_viewer_vjs_plugin_url.= "/dist/formater-pdf-viewer-vjs_" . self::FORMATER_PDF_VIEWER_VJS_VERSION. ".js";
+                 self::$_formater_pdf_viewer_vjs_plugin_url.= "/dist/formater-pdf-viewer-vjs.js";
              }
              add_action ( 'wp_enqueue_scripts', array( &$this, 'formater_register_pdf_script' ));
              /**
