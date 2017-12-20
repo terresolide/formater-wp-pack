@@ -142,6 +142,7 @@ class Fm_svg_manager {
         if ( $interactive ) {
             $class = "";
             $url = wp_get_attachment_image_src( $id )[0];
+            var_dump( parse_url($url));
             if ( isset ( $attachment ['align'] )) {
                 switch ($attachment ['align']) {
                     case 'left' :

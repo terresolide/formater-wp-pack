@@ -80,7 +80,11 @@ class Fm_pdf_manager
             if (isset ( $attachment ['rotate'] )) {
                 $rotate = ' rotate=' . intVal ( $attachment ['rotate'] );
             }
-            
+            //@TODO replace attachment url with www7.obs-mip.fr by site domaine url
+            //$url = parse_url($attachment ['url']);
+            //$url = str_replace(  )
+            //$url["scheme"].$url["host"]
+            //WP_HOME WP_SITEURL
             $filter = '[embed-pdf src=' . $attachment ['url'] . $rotate . ' ]' . $title . '[/embed-pdf]';
 
             return apply_filters ( 'pdf_override_send_to_editor', $filter, $html, $id, $attachment );
