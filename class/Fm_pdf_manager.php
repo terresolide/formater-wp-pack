@@ -1,6 +1,6 @@
 <?php
 /**
- * Manage svg files
+ * Manage PDF files
  * use vuejs webcomponent formater-pdf-viewer-vjs
  * @see https://github.com/terresolide/formater-pdf-viewer-vjs
  * @author epointal
@@ -10,7 +10,8 @@ if (! defined ( 'ABSPATH' ))
 
 class Fm_pdf_manager
 {
-    const FORMATER_PDF_VIEWER_VJS_VERSION = '0.1.6';
+    const FORMATER_PDF_VIEWER_VJS_VERSION = '0.1.7';
+    const URL_WEBCOMPONENTS = 'https://api.poleterresolide.fr/webcomponents/';
     public static $_count_pdf = 0;
     public static $_formater_pdf_viewer_vjs_plugin_url = '';
      
@@ -32,14 +33,11 @@ class Fm_pdf_manager
              /**
               * Register script webcomponent formater-pdf-viewer-vjs
               */
-             if (WP_DEBUG) {
-                 // use master version
-                 self::$_formater_pdf_viewer_vjs_plugin_url= "https://rawgit.com/terresolide/formater-pdf-viewer-vjs/master/dist0/formater-pdf-viewer-vjs.js";
-             } else {
-                 // use last tag version
-                 self::$_formater_pdf_viewer_vjs_plugin_url = "https://cdn.rawgit.com/terresolide/formater-pdf-viewer-vjs/" . self::FORMATER_PDF_VIEWER_VJS_VERSION;
-                 self::$_formater_pdf_viewer_vjs_plugin_url.= "/dist/formater-pdf-viewer-vjs.js";
-             }
+             // use last tag version
+                 
+         	self::$_formater_pdf_viewer_vjs_plugin_url = self::URL_WEBCOMPONENTS . 'formater-pdf-viewer-vjs_';
+         	self::$_formater_pdf_viewer_vjs_plugin_url .= self::FORMATER_PDF_VIEWER_VJS_VERSION . '.js';
+             
              add_action ( 'wp_enqueue_scripts', array( &$this, 'formater_register_pdf_script' ));
              /**
               * Add shortcode to write webcomponent <formater-pdf-viewer> instead [embed-pdf]
