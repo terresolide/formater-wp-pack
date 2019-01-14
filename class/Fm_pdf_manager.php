@@ -10,8 +10,8 @@ if (! defined ( 'ABSPATH' ))
 
 class Fm_pdf_manager
 {
-    const FORMATER_PDF_VIEWER_VJS_VERSION = '0.1.7';
-    const URL_WEBCOMPONENTS = 'https://api.poleterresolide.fr/webcomponents/';
+    const FORMATER_PDF_VIEWER_VJS_VERSION = '1.0.2';
+    const URL_WEBCOMPONENTS = 'https://cdn.jsdelivr.net/gh/terresolide/formater-pdf-viewer-vjs';
     public static $_count_pdf = 0;
     public static $_formater_pdf_viewer_vjs_plugin_url = '';
      
@@ -39,7 +39,8 @@ class Fm_pdf_manager
               */
              // use last tag version
                  
-         	self::$_formater_pdf_viewer_vjs_plugin_url = self::URL_WEBCOMPONENTS . 'formater-pdf-viewer-vjs_';
+         	self::$_formater_pdf_viewer_vjs_plugin_url = self::URL_WEBCOMPONENTS . '@'.self::FORMATER_PDF_VIEWER_VJS_VERSION;
+         	self::$_formater_pdf_viewer_vjs_plugin_url .= '/dist/formater-pdf-viewer-vjs_';
          	self::$_formater_pdf_viewer_vjs_plugin_url .= self::FORMATER_PDF_VIEWER_VJS_VERSION . '.js';
              
              add_action ( 'wp_enqueue_scripts', array( &$this, 'formater_register_pdf_script' ));

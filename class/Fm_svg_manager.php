@@ -257,7 +257,7 @@ class Fm_svg_manager {
                 $content .= self::svg_script ();
             }
             self::$_count_svg ++;
-            if (isset ( $attrs ['class'] ) && ! isset ( $attrs ['hide_button'] )) {
+            if (isset ( $attrs ['class'] ) && !empty($attrs['class']) && ! isset ( $attrs ['hide_button'] )) {
                 $value = $attrs ['class'] == 'fm-right' ? 1 : 0;
                 $content .= '<div class="formater-svg ' . $attrs ['class'] . '"  >';
                 $content .= '<div class="fm-enlarge fa" onclick="formater_switch_svg( this, ' . $value . ')"></div>';

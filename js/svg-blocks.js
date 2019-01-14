@@ -1,7 +1,7 @@
 /*
  * Gutenberg block Javascript code
  */
-    var __                = wp.i18n.__; // The __() function for internationalization.
+   // var __                = wp.i18n.__; // The __() function for internationalization.
     var createElement     = wp.element.createElement; // The wp.element.createElement() function to create elements.
     var registerBlockType = wp.blocks.registerBlockType; // The registerBlockType() function to register blocks.
 	
@@ -51,20 +51,23 @@
 				var TextControl = wp.components.TextControl;
 				var SelectControl = wp.components.SelectControl;
 				var RadioControl = wp.components.RadioControl;
-					
+			    var CheckboxControl = wp.components.CheckboxControl;
+			    
 				var onSelectSVG = function(media) {
 					var align = '';
-					switch(media.align) {
-					  case 'left':
-					  case 'right':
-						align = 'fmt-' + media.align;
-						break;
-					}
+					console.log(media);
+					console.log(media.compat.item);
+					
+					var html = new DOMParser().parseFromString(media.compat.item, 'text/html');
+					var interactive = html.body.querySelector('[id*="fm_interactive"]');
+					console.log(interactive.value);
+					
                     return props.setAttributes({
                         src: media.url,
                         svgID: media.id,
-                        interactive: media.fm_interactive,
-                        class: align
+                        interactive: interactive.value,
+                        class: '',
+                        hide_button: true
                     });
                 }
 				function onChangeInteractive(v) {
@@ -73,16 +76,24 @@
 				function onChangeClass (v) {
 					setAttributes( {class: v});
 				}
+				function onChangeHideButton (v) {
+					if (attributes.class in ['fmt-left', 'fmt-right']) {
+						setAttributes({class:v});
+					} else {
+						setAttributes({class: true});
+					}
+				}
 				return [
 					createElement(
                         MediaUpload,
                         {
                             onSelect: onSelectSVG,
-                            type: 'application/svg+xml',
+                            type: 'image/svg+xml',
+                            allowedTypes: ['image/svg+xml'],
                             value: attributes.svgID,
                             render: function(open) {
                                 return createElement(btn,{onClick: open.open },
-                                    attributes.src ? 'SVG: ' + attributes.svg : 'Click here to Open Media Library to select SVG')
+                                    attributes.src ? 'SVG: ' + attributes.src : 'Click here to Open Media Library to select SVG')
                             }
                         }
 					),
@@ -96,28 +107,42 @@
 							createElement(
 								'p',
 								{},
-								__('Change SVG interactive'),
+								'Change SVG interactive'
+								//__('Change SVG interactive')
 							),
 							createElement(
-									TextControl,
+								CheckboxControl,
+								{
+									// label: __('Interactive'),
+									label: 'Interactive',
+									value: attributes.interactive,
+									checked: attributes.interactive,
+									onChange: onChangeInteractive
+								}
+							),
+							createElement(
+								SelectControl,
+								{
+									// label: __('Alignment'),
+									label: 'Alignment',
+									value: attributes.class,
+									options: [
+										{ label: 'No alignment', value: '' },
+										{ label: 'Left', value: 'fmt-left' },
+										{ label: 'Right', value: 'fmt-right' }
+									],
+									onChange: onChangeClass
+								}
+						    ),
+						    createElement(
+						    		CheckboxControl,
 									{
-										label: __('Interactive'),
-										value: attributes.interactive,
-										onChange: onChangeInteractive
+										// label: __('Interactive'),
+										label: 'Hide button enlarge/reduce',
+										value: attributes.hide_button,
+										checked: attributes.hide_button,
+										onChange: onChangeHideButton
 									}
-							),
-							createElement(
-									SelectControl,
-										{
-											label: __('Alignement'),
-											value: attributes.toolbar,
-											options: [
-												{ label: 'Left', value: 'fmt-left' },
-												{ label: 'Right', value: 'fmt-right' },
-												{ label: 'No alignement', value: '' }
-											],
-											onChange: onChangeClass
-										}
 						    )
 						),
 					),

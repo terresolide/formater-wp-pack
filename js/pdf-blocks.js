@@ -17,7 +17,7 @@
     registerBlockType(
 		'formater-wp-pack/pdf-block', // Block name. Must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.	
         {
-            title: __( 'PDF Embedder' ), // Block title. __() function allows for internationalization.
+            title: __( 'PDF File' ), // Block title. __() function allows for internationalization.
             icon: 'media-document', // Block icon from Dashicons. https://developer.wordpress.org/resource/dashicons/.
 			category: 'common', // Block category. Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
             attributes: {
@@ -64,6 +64,7 @@
                         {
                             onSelect: onSelectPDF,
                             type: 'application/pdf',
+                            allowedTypes: 'application/pdf',
                             value: attributes.pdfID,
                             render: function(open) {
                                 return createElement(btn,{onClick: open.open },
@@ -84,15 +85,21 @@
 								__('Change PDF rotation'),
 							),
 							createElement(
-									TextControl,
-									{
-										label: __('Rotation'),
-										value: attributes.rotate,
-										onChange: onChangeRotate
-									}
+								SelectControl,
+								{
+									label: __('Rotation'),
+									value: attributes.rotate,
+									onChange: onChangeRotate,
+									options: [
+										{ label: '-90', value: -90 },
+										{ label: '0', value: 0 },
+										{ label: '90', value: 90 },
+										{ label: '180', value: 180 }
+									]
+								}
 							)
 						),
-					),
+					)
                 ];
             },
 
