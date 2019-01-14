@@ -230,7 +230,7 @@ class Fm_svg_manager {
         $upload_info = wp_upload_dir ();
         $upload_dir = $upload_info ['basedir'];
         $upload_url = $upload_info ['baseurl'];
-        
+
         $url = $attrs ["src"];
         // load by path instead url
         $path = realpath ( str_replace ( $upload_url, $upload_dir, $url ) );
@@ -257,10 +257,12 @@ class Fm_svg_manager {
                 $content .= self::svg_script ();
             }
             self::$_count_svg ++;
-            if (isset ( $attrs ['class'] ) && !empty($attrs['class']) && ! isset ( $attrs ['hide_button'] )) {
+            if (isset ( $attrs ['class'] ) && !empty($attrs['class'])) {
                 $value = $attrs ['class'] == 'fm-right' ? 1 : 0;
                 $content .= '<div class="formater-svg ' . $attrs ['class'] . '"  >';
-                $content .= '<div class="fm-enlarge fa" onclick="formater_switch_svg( this, ' . $value . ')"></div>';
+                if (isset($attrs['hide_button']) && !$attrs['hide_button']) {
+                	$content .= '<div class="fm-enlarge fa" onclick="formater_switch_svg( this, ' . $value . ')"></div>';
+                }
             } else {
                 $content .= '<div class="formater-svg">';
             }
@@ -282,11 +284,11 @@ class Fm_svg_manager {
     			Formater_WP_Pack::VERSION
     			);
     	
-    	//     	wp_enqueue_style(
-    	//     			'fm-pdf-gutenberg-block-css', // Handle.
-    	//     			Formater_WP_Pack::$url. 'css/pdf-block.css', // editor.css: This file styles the block within the Gutenberg editor.
-    	//     			array( 'wp-edit-blocks' ), // Dependencies, defined above.
-    	//     			Formater_WP_Pack::VERSION
-    	//     			);
+        wp_enqueue_style(
+    	    	'fm-pdf-gutenberg-block-css', // Handle.
+    	    	Formater_WP_Pack::$url. 'css/svg-block.css', // editor.css: This file styles the block within the Gutenberg editor.
+    	    	array( 'wp-edit-blocks' ), // Dependencies, defined above.
+    	    	Formater_WP_Pack::VERSION
+    	);
     }
 }

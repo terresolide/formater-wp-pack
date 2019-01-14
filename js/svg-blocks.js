@@ -27,13 +27,13 @@
                     type: 'string'
                 },
                 interactive: {
-                	type: 'number'
+                	type: 'boolean'
                 },
                 class: {
                 	type: 'string'
                 },
                 hide_button: {
-                	type: 'number'
+                	type: 'boolean'
                 }
             },
 
@@ -41,7 +41,7 @@
             edit: function( props ) {
 				
 				var {attributes , setAttributes, focus, className} = props;
-                	
+                console.log(props);
 				var InspectorControls = wp.editor.InspectorControls;
 				var Button = wp.components.Button;
 				var RichText = wp.editor.RichText;
@@ -52,22 +52,16 @@
 				var SelectControl = wp.components.SelectControl;
 				var RadioControl = wp.components.RadioControl;
 			    var CheckboxControl = wp.components.CheckboxControl;
-			    
 				var onSelectSVG = function(media) {
 					var align = '';
-					console.log(media);
-					console.log(media.compat.item);
-					
 					var html = new DOMParser().parseFromString(media.compat.item, 'text/html');
 					var interactive = html.body.querySelector('[id*="fm_interactive"]');
-					console.log(interactive.value);
-					
                     return props.setAttributes({
                         src: media.url,
                         svgID: media.id,
                         interactive: interactive.value,
                         class: '',
-                        hide_button: true
+                        hide_button: false
                     });
                 }
 				function onChangeInteractive(v) {
@@ -77,11 +71,7 @@
 					setAttributes( {class: v});
 				}
 				function onChangeHideButton (v) {
-					if (attributes.class in ['fmt-left', 'fmt-right']) {
-						setAttributes({class:v});
-					} else {
-						setAttributes({class: true});
-					}
+						setAttributes({hide_button:v});
 				}
 				return [
 					createElement(
@@ -128,8 +118,8 @@
 									value: attributes.class,
 									options: [
 										{ label: 'No alignment', value: '' },
-										{ label: 'Left', value: 'fmt-left' },
-										{ label: 'Right', value: 'fmt-right' }
+										{ label: 'Left', value: 'fm-left' },
+										{ label: 'Right', value: 'fm-right' }
 									],
 									onChange: onChangeClass
 								}

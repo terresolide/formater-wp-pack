@@ -28,15 +28,13 @@
                     type: 'string'
                 },
                 rotate: {
-                	type: 'number'
+                	type: 'string'
                 }
             },
 
             // Defines the block within the editor.
             edit: function( props ) {
-				
 				var {attributes , setAttributes, focus, className} = props;
-                	
 				var InspectorControls = wp.editor.InspectorControls;
 				var Button = wp.components.Button;
 				var RichText = wp.editor.RichText;
@@ -51,7 +49,7 @@
                     return props.setAttributes({
                         src: media.url,
                         pdfID: media.id,
-                        rotate: 0
+                        rotate: '0'
                     });
                 }
 				function onChangeRotate(v) {
@@ -88,13 +86,13 @@
 								SelectControl,
 								{
 									label: __('Rotation'),
-									value: attributes.rotate,
+									value: typeof attributes.rotate !== 'undefined' ? attributes.rotate: '0',
 									onChange: onChangeRotate,
 									options: [
-										{ label: '-90', value: -90 },
-										{ label: '0', value: 0 },
-										{ label: '90', value: 90 },
-										{ label: '180', value: 180 }
+										{ label: '-90', value: '-90' },
+										{ label: '0', value: '0' },
+										{ label: '90', value: '90' },
+										{ label: '180', value: '180' }
 									]
 								}
 							)
