@@ -40,10 +40,8 @@
 				var RichText = wp.editor.RichText;
 				var Editable = wp.blocks.Editable; // Editable component of React.
 				var MediaUpload = wp.editor.MediaUpload;
-				var btn = wp.components.Button;
 				var TextControl = wp.components.TextControl;
 				var SelectControl = wp.components.SelectControl;
-				var RadioControl = wp.components.RadioControl;
 					
 				var onSelectPDF = function(media) {
                     return props.setAttributes({
@@ -65,7 +63,7 @@
                             allowedTypes: 'application/pdf',
                             value: attributes.pdfID,
                             render: function(open) {
-                                return createElement(btn,{onClick: open.open },
+                                return createElement(Button,{onClick: open.open },
                                     attributes.src ? 'PDF: ' + attributes.src : 'Click here to Open Media Library to select PDF')
                             }
                         }

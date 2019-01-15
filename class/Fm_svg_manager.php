@@ -97,8 +97,7 @@ class Fm_svg_manager {
         
         if($post->post_mime_type == 'image/svg+xml'){
             
-            $value = get_post_meta( $post->ID, 'fm_interactive', true );
-            
+            $value = get_post_meta( $post->ID, 'fm_interactive', true ); 
             
             $html = $this->create_field_interactive( $post->ID , $value);
             

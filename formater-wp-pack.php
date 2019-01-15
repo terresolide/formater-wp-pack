@@ -30,7 +30,7 @@ Class Formater_WP_Pack
         require_once plugin_dir_path( __FILE__ ) . '/class/Fm_pdf_manager.php';
         require_once plugin_dir_path( __FILE__ ) . '/class/Fm_svg_manager.php';
         self::$_pdf_manager = new Fm_pdf_manager();
-        self::$_svg_manager =  new Fm_svg_manager();     
+        self::$_svg_manager = new Fm_svg_manager();     
     }
     
     public static function get_instance(){
