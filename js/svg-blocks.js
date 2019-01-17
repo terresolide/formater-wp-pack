@@ -20,14 +20,15 @@
             icon: 'media-document', // Block icon from Dashicons. https://developer.wordpress.org/resource/dashicons/.
 			category: 'common', // Block category. Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
             attributes: {
-				pdfID: {
+				svgID: {
                     type: 'number'
                 },
                 src: {
                     type: 'string'
                 },
                 interactive: {
-                	type: 'boolean'
+                	type: 'boolean',
+                	default: true
                 },
                 class: {
                 	type: 'string'
@@ -41,11 +42,8 @@
             edit: function( props ) {
 				
 				var {attributes , setAttributes, focus, className} = props;
-                console.log(props);
 				var InspectorControls = wp.editor.InspectorControls;
 				var Button = wp.components.Button;
-				var RichText = wp.editor.RichText;
-				var Editable = wp.blocks.Editable; // Editable component of React.
 				var MediaUpload = wp.editor.MediaUpload;
 				var btn = wp.components.Button;
 				var TextControl = wp.components.TextControl;
