@@ -280,14 +280,7 @@ class Fm_svg_manager {
     			'fm-svg-gutenberg-block-js', // Unique handle.
     			Formater_WP_Pack::$url. '/js/svg-blocks.js',
     			array( 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
-    			Formater_WP_Pack::VERSION
+    			Formater_WP_Pack::$VERSION
     			);
-    	
-        wp_enqueue_style(
-    	    	'fm-pdf-gutenberg-block-css', // Handle.
-    	    	Formater_WP_Pack::$url. 'css/svg-block.css', // editor.css: This file styles the block within the Gutenberg editor.
-    	    	array( 'wp-edit-blocks' ), // Dependencies, defined above.
-    	    	Formater_WP_Pack::VERSION
-    	);
     }
 }

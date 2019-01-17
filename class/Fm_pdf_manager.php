@@ -131,7 +131,7 @@ class Fm_pdf_manager
     			'fm-pdf-gutenberg-block-js', // Unique handle.
     			Formater_WP_Pack::$url. '/js/pdf-blocks.js',
     			array( 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
-    			Formater_WP_Pack::VERSION
+    			Formater_WP_Pack::$VERSION
     			);
     	
 //     	wp_enqueue_style(

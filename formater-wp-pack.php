@@ -18,7 +18,7 @@ Class Formater_WP_Pack
     private static $_pdf_manager;
     private static $_svg_manager;
     public static $url;
-    public const VERSION = '1.0.3';
+    public static $VERSION = '1.0.3';
     
     private function __construct()
     {
