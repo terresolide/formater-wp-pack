@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Formater-wp-pack
  * Description: Manage svg and pdf files
- * Version: 1.0.3
+ * Version: 2.0.0
  * Author: epointal
  * Author URI: http://elisabeth.pointal.org/
  * GitHub Plugin URI: terresolide/formater-wp-pack
@@ -18,7 +18,7 @@ Class Formater_WP_Pack
     private static $_pdf_manager;
     private static $_svg_manager;
     public static $url;
-    public static $VERSION = '1.0.3';
+    public static $VERSION = '2.0.0';
     
     private function __construct()
     {
