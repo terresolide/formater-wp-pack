@@ -35,6 +35,9 @@ class Fm_svg_manager {
                     20,
                     3 
             ) ;
+            /* Add "shortcode" with GUTENBERG editor too
+            */
+            add_action( 'enqueue_block_editor_assets', array($this, 'gutenberg_enqueue_block_editor_assets') );
             // Add field "interactive" to svg in media manager
             add_filter( 'attachment_fields_to_edit', array( &$this, 'svg_attachment_field'), 10, 2 );
             add_filter( 'attachment_fields_to_save', array( &$this, 'svg_attachment_save_field' ), 10, 2 );
@@ -42,6 +45,14 @@ class Fm_svg_manager {
         } else {
             // include content for svg file
             add_shortcode ( "formater-svg", array( &$this, "include_file_svg") );
+            
+           
+            // Gutenberg block js/svg-block
+            if (function_exists('register_block_type')) {
+            	register_block_type( 'formater-wp-pack/svg-block', array(
+            			'render_callback' => array($this, 'include_file_svg')
+            	) );
+            }
         }
     }
     
@@ -86,8 +97,7 @@ class Fm_svg_manager {
         
         if($post->post_mime_type == 'image/svg+xml'){
             
-            $value = get_post_meta( $post->ID, 'fm_interactive', true );
-            
+            $value = get_post_meta( $post->ID, 'fm_interactive', true ); 
             
             $html = $this->create_field_interactive( $post->ID , $value);
             
@@ -219,7 +229,7 @@ class Fm_svg_manager {
         $upload_info = wp_upload_dir ();
         $upload_dir = $upload_info ['basedir'];
         $upload_url = $upload_info ['baseurl'];
-        
+
         $url = $attrs ["src"];
         // load by path instead url
         $path = realpath ( str_replace ( $upload_url, $upload_dir, $url ) );
@@ -246,10 +256,12 @@ class Fm_svg_manager {
                 $content .= self::svg_script ();
             }
             self::$_count_svg ++;
-            if (isset ( $attrs ['class'] ) && ! isset ( $attrs ['hide_button'] )) {
+            if (isset ( $attrs ['class'] ) && !empty($attrs['class'])) {
                 $value = $attrs ['class'] == 'fm-right' ? 1 : 0;
                 $content .= '<div class="formater-svg ' . $attrs ['class'] . '"  >';
-                $content .= '<div class="fm-enlarge fa" onclick="formater_switch_svg( this, ' . $value . ')"></div>';
+                if (isset($attrs['hide_button']) && !$attrs['hide_button']) {
+                	$content .= '<div class="fm-enlarge fa" onclick="formater_switch_svg( this, ' . $value . ')"></div>';
+                }
             } else {
                 $content .= '<div class="formater-svg">';
             }
@@ -259,5 +271,23 @@ class Fm_svg_manager {
        
             return $content;
         }
+    }
+    
+    // Wordpress 5 - enqueue scripts for Gutenberg editor
+    
+    public function gutenberg_enqueue_block_editor_assets() {
+    	wp_enqueue_script(
+    			'fm-svg-gutenberg-block-js', // Unique handle.
+    			Formater_WP_Pack::$url. '/js/svg-blocks.js',
+    			array( 'wp-blocks', 'wp-i18n', 'wp-element' ), // Dependencies, defined above.
+    			Formater_WP_Pack::VERSION
+    			);
+    	
+        wp_enqueue_style(
+    	    	'fm-pdf-gutenberg-block-css', // Handle.
+    	    	Formater_WP_Pack::$url. 'css/svg-block.css', // editor.css: This file styles the block within the Gutenberg editor.
+    	    	array( 'wp-edit-blocks' ), // Dependencies, defined above.
+    	    	Formater_WP_Pack::VERSION
+    	);
     }
 }
