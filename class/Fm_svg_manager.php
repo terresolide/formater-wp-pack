@@ -43,9 +43,9 @@ class Fm_svg_manager {
             add_filter( 'attachment_fields_to_save', array( &$this, 'svg_attachment_save_field' ), 10, 2 );
             
         } else {
+        	add_action ( 'wp_enqueue_scripts', array( &$this, 'formater_register_svg_script' ));
             // include content for svg file
             add_shortcode ( "formater-svg", array( &$this, "include_file_svg") );
-            
            
             // Gutenberg block js/svg-block
             if (function_exists('register_block_type')) {
@@ -189,6 +189,16 @@ class Fm_svg_manager {
      * But it's heavy to load a js or css files for only one function
      * Then I give up this method
      */
+    public function formater_register_svg_script() {
+    	if (WP_DEBUG) {
+    		wp_register_script ( 'fmt_svg_js', Formater_WP_Pack::$url.'/js/manage-svg.js', Array (), Formater_WP_Pack::$VERSION, true );
+    		wp_register_style ('fmt_svg_css', Formater_WP_Pack::$url.'/css/manage-svg.css', Array(), Formater_WP_Pack::$VERSION, null);
+    	}else{
+    		wp_register_script ( 'fmt_svg_js', Formater_WP_Pack::$url.'/dist/manage-svg-min.js', Array (), Formater_WP_Pack::$VERSION );
+    		wp_register_style ('fmt_svg_css', Formater_WP_Pack::$url.'/dist/manage-svg.css', Array(), Formater_WP_Pack::$VERSION);
+    		
+        }
+    }
     /**
      * Return the content of javascript file manage-svg i
      * ready to insert in post
@@ -201,7 +211,7 @@ class Fm_svg_manager {
         } else {
             $script = file_get_contents ( self::$_plugin_dir. 'dist/manage-svg-min.js' );
         }
-        return '<script type="text/javascript">' . $script . '</script>';
+        return '<script type="text/javascript"><![CDATA[' . $script . ']]</script>';
     }
     /**
      * Return the content of css file manage-svg
@@ -215,7 +225,7 @@ class Fm_svg_manager {
         } else {
             $style = file_get_contents ( self::$_plugin_dir. 'dist/manage-svg.css' );
         }
-        return '<style>' . $style . '</style>';
+        return '<style><![CDATA[' . $style . ']]</style>';
     }
     /**
      * Return the html to include in post
@@ -252,8 +262,10 @@ class Fm_svg_manager {
                  * but it's heavy to load a script file for only one little function
                  * see before
                  */
-                $content .= self::svg_style ();
-                $content .= self::svg_script ();
+            	wp_enqueue_script('fmt_svg_js');
+            	wp_enqueue_style('fmt_svg_css');
+               // $content .= self::svg_style ();
+               // $content .= self::svg_script ();
             }
             self::$_count_svg ++;
             if (isset ( $attrs ['class'] ) && !empty($attrs['class'])) {
@@ -267,12 +279,32 @@ class Fm_svg_manager {
             }
             $svg = $svgs->item ( 0 );
             $svg->setAttribute ( 'preserveAspectRatio', 'xMinYMin meet' );
-            $content .= $doc->saveHTML ( $svg ) . '</div>';
+            
+            $content .= self::sanitize_output($doc->saveHTML ( $svg )) . '</div>';
        
             return $content;
         }
     }
-    
+    public static function sanitize_output($buffer) {
+    	
+    	$search = array(
+    			'/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+    			'/[^\S ]+\</s',     // strip whitespaces before tags, except space
+    			'/(\s)+/s',         // shorten multiple whitespace sequences
+    			'/<!--(.|\s)*?-->/' // Remove HTML comments
+    	);
+    	
+    	$replace = array(
+    			'>',
+    			'<',
+    			'\\1',
+    			''
+    	);
+    	
+    	$buffer = preg_replace($search, $replace, $buffer);
+    	
+    	return $buffer;
+    }
     // Wordpress 5 - enqueue scripts for Gutenberg editor
     
     public function gutenberg_enqueue_block_editor_assets() {
