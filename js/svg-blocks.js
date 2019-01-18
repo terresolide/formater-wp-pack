@@ -139,12 +139,13 @@
 
             // Defines the saved block.
             save: function( props ) {
-				return createElement(
-                    'p',
-                    {
-                        className: props.className,
-						key: 'return-key',
-                    },props.attributes.content);
+				return '';
+//				createElement(
+//                    'p',
+//                    {
+//                        className: props.className,
+//						key: 'return-key',
+//                    },props.attributes.content);
 			},
         }
     );
