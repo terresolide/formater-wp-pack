@@ -98,7 +98,7 @@ class Fm_svg_manager {
         if($post->post_mime_type == 'image/svg+xml'){
             
             $value = get_post_meta( $post->ID, 'fm_interactive', true ); 
-            
+
             $html = $this->create_field_interactive( $post->ID , $value);
             
             $form_fields['fm_interactive'] = array(
@@ -173,7 +173,6 @@ class Fm_svg_manager {
      * @return string
      */
     private function create_field_interactive( $post_id, $value ){
-        
         $checked = $value ? 'checked="checked"': '';
         
         $html = '<input type="checkbox" name="attachments['. $post_id .'][fm_interactive]"';
@@ -185,9 +184,7 @@ class Fm_svg_manager {
     }
     /**
      * Best practice wordpress is to register script and style
-     * Not to include direct tag script or style
-     * But it's heavy to load a js or css files for only one function
-     * Then I give up this method
+     * Register js or css files 
      */
     public function formater_register_svg_script() {
     	if (WP_DEBUG) {
@@ -202,7 +199,7 @@ class Fm_svg_manager {
     /**
      * Return the content of javascript file manage-svg i
      * ready to insert in post
-     * 
+     * @todo function unused
      * @return string
      */
     private static  function svg_script() {
@@ -216,7 +213,7 @@ class Fm_svg_manager {
     /**
      * Return the content of css file manage-svg
      * ready to insert in post
-     * 
+     * @todo function unused
      * @return string
      */
     private static function svg_style() {
@@ -245,7 +242,7 @@ class Fm_svg_manager {
         $path = realpath ( str_replace ( $upload_url, $upload_dir, $url ) );
   
         // $svg = file_get_contents($url);
-        if (! file_exists ( $path )) {
+        if (!preg_match('/.+\.svg$/i', $path) || !file_exists ( $path )) {
             return "";
         }
         $doc = new DOMDocument ();

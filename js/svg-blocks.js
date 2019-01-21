@@ -43,28 +43,25 @@
 				
 				var {attributes , setAttributes, focus, className} = props;
 				var InspectorControls = wp.editor.InspectorControls;
-				var Button = wp.components.Button;
 				var MediaUpload = wp.editor.MediaUpload;
 				var btn = wp.components.Button;
-				var TextControl = wp.components.TextControl;
 				var SelectControl = wp.components.SelectControl;
-				var RadioControl = wp.components.RadioControl;
 			    var CheckboxControl = wp.components.CheckboxControl;
 				var onSelectSVG = function(media) {
 					var align = '';
 					var html = new DOMParser().parseFromString(media.compat.item, 'text/html');
-					var interactive = html.body.querySelector('[id*="fm_interactive"]');
+					// var interactive = html.body.querySelector('[id*="fm_interactive"]');
                     return props.setAttributes({
                         src: media.url,
                         svgID: media.id,
-                        interactive: interactive.value,
+                        interactive: true,
                         class: '',
                         hide_button: false
                     });
                 }
-				function onChangeInteractive(v) {
-                    setAttributes( {interactive: v} );
-                }
+			    function onChangeInteractive (v) {
+			    	setAttributes({interactive:true});
+			    }
 				function onChangeClass (v) {
 					setAttributes( {class: v});
 				}
@@ -93,19 +90,10 @@
 								{},
 							),
 							createElement(
-								'p',
-								{},
-								'Change SVG interactive'
-								//__('Change SVG interactive')
-							),
-							createElement(
 								CheckboxControl,
 								{
-									// label: __('Interactive'),
-									label: 'Interactive',
 									value: attributes.interactive,
-									checked: attributes.interactive,
-									onChange: onChangeInteractive
+								    onChange: onChangeInteractive
 								}
 							),
 							createElement(
@@ -140,12 +128,6 @@
             // Defines the saved block.
             save: function( props ) {
 				return '';
-//				createElement(
-//                    'p',
-//                    {
-//                        className: props.className,
-//						key: 'return-key',
-//                    },props.attributes.content);
 			},
         }
     );
