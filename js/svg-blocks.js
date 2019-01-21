@@ -26,10 +26,6 @@
                 src: {
                     type: 'string'
                 },
-                interactive: {
-                	type: 'boolean',
-                	default: true
-                },
                 class: {
                 	type: 'string'
                 },
@@ -42,26 +38,24 @@
             edit: function( props ) {
 				
 				var {attributes , setAttributes, focus, className} = props;
+				props.setAttributes({interactive: true});
 				var InspectorControls = wp.editor.InspectorControls;
 				var MediaUpload = wp.editor.MediaUpload;
 				var btn = wp.components.Button;
 				var SelectControl = wp.components.SelectControl;
 			    var CheckboxControl = wp.components.CheckboxControl;
+			   
 				var onSelectSVG = function(media) {
 					var align = '';
-					var html = new DOMParser().parseFromString(media.compat.item, 'text/html');
+					// var html = new DOMParser().parseFromString(media.compat.item, 'text/html');
 					// var interactive = html.body.querySelector('[id*="fm_interactive"]');
                     return props.setAttributes({
                         src: media.url,
                         svgID: media.id,
-                        interactive: true,
                         class: '',
                         hide_button: false
                     });
                 }
-			    function onChangeInteractive (v) {
-			    	setAttributes({interactive:true});
-			    }
 				function onChangeClass (v) {
 					setAttributes( {class: v});
 				}
@@ -88,13 +82,6 @@
 							createElement(
 								'hr',
 								{},
-							),
-							createElement(
-								CheckboxControl,
-								{
-									value: attributes.interactive,
-								    onChange: onChangeInteractive
-								}
 							),
 							createElement(
 								SelectControl,
