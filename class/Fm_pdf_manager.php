@@ -107,7 +107,10 @@ class Fm_pdf_manager
     public function embed_pdf($attrs, $html = '') {
         global $_formater_pdf_count;
         $url = $attrs ["src"];
-        
+        // if the url is not pdf url
+        if (!preg_match('/.+\.pdf$/i', $url)) {
+        	return '';
+        }
         if ($_formater_pdf_count == 0) {
             // load script webcomponent formater-pdf-viewer-vjs
             // only for the first component formater-pdf-viewer

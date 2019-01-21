@@ -37,10 +37,7 @@
 				var {attributes , setAttributes, focus, className} = props;
 				var InspectorControls = wp.editor.InspectorControls;
 				var Button = wp.components.Button;
-				var RichText = wp.editor.RichText;
-				var Editable = wp.blocks.Editable; // Editable component of React.
 				var MediaUpload = wp.editor.MediaUpload;
-				var TextControl = wp.components.TextControl;
 				var SelectControl = wp.components.SelectControl;
 					
 				var onSelectPDF = function(media) {
@@ -102,12 +99,6 @@
             // Defines the saved block.
             save: function( props ) {
 				return '';
-//				createElement(
-//                    'p',
-//                    {
-//                        className: props.className,
-//						key: 'return-key',
-//                    },props.attributes.content);
 			},
         }
     );
